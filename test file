@@ -1,3 +1,27 @@
-Can this be a python file?
+import requests
 
-Can this be a different type of programming language?
+api_endpoint = f'https://www.sec.gov/files/company_tickers.json?'
+api_form_endpoint = f'https://data.sec.gov/api/xbrl/companyfacts/CIK'
+api_json = f'.json'
+
+api_request = requests.get(api_endpoint)
+tickers = api_request.json()
+
+#set the ticker to the ticker of the company
+
+ticker_var = 'AMZN'
+
+for tick in tickers:
+    if tickers[tick]['ticker'] == ticker_var:
+        cik_var = tickers[tick]['cik_str']
+        cik = str(cik_var).zfill(10)
+        print(cik)
+        print(ticker_var)
+
+api_form_request = requests.get(api_form_endpoint + cik + api_json)
+status = api_form_request.status_code
+
+if status == 403:
+    print(api_form_request.status_code)
+else:
+    api_form_request.json()
